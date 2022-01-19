@@ -7,15 +7,10 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-```
-```{r}
-#install.packages("palmerpenguins")
-#library(palmerpenguins)
-#data(package = 'palmerpenguins')
-penguins 
-View(penguins)
-```
 
+library(palmerpenguins)
+penguins 
+```
 Ejercicio 1: Número de individuos totales, masculinos y femeninos por especie. 
 La media, desviación estándar, valor mínimo y máximo de la longitud y 
 profundidad del pico, la longitud de la aleta y el tamaño.
@@ -23,8 +18,7 @@ profundidad del pico, la longitud de la aleta y el tamaño.
 Entiendo el ejercicio de esta manera: primero diferenciar entre especies y dentro de las especies entre su sexo, y desde ahí saber media, sd... de las distintas variables pedidas.
 
 ```{r}
-#install.packages("tidyverse")
-#library(tidyverse)
+library(tidyverse)
 
  tablalongitudpico <- penguins %>%
   select(species, sex, bill_length_mm) %>% 
@@ -58,8 +52,7 @@ head(tablatamaño)
 Ejercicio 2: Un gráfico de barras que represente el número de individuos muestreados de cada especie en cada isla, representando las especies en diferentes colores (chinstrap – morado, gentoo – azul, adelie – naranja). Contesta a las siguientes preguntas: ¿qué especie se ha muestreado en las tres islas? ¿cuántos individuos se han muestreado de la isla Dream?
 
 ```{r}
-#install.packages("ggplot2")
-#library(ggplot2)
+library(ggplot2)
 
 ggplot(data = penguins) +
   geom_bar(aes(x = island, fill = species)) +
@@ -95,7 +88,7 @@ PenguinChinstrap <- penguins %>%
 GraficoChinstrap <- ggplot(data = PenguinChinstrap ) + 
   geom_boxplot(aes(x = sex, y = body_mass_g))
 
-#library(patchwork) 
+library(patchwork) 
 
 GraficoAdelie + GraficoChinstrap + GraficoGentoo
 ```
