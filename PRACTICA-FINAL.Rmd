@@ -1,0 +1,103 @@
+---
+title: "PRACTICA FINAL"
+author: "IRENE REDONDO ORÚE"
+date: "19/1/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+```{r}
+#install.packages("palmerpenguins")
+#library(palmerpenguins)
+#data(package = 'palmerpenguins')
+penguins 
+View(penguins)
+```
+
+Ejercicio 1: Número de individuos totales, masculinos y femeninos por especie. 
+La media, desviación estándar, valor mínimo y máximo de la longitud y 
+profundidad del pico, la longitud de la aleta y el tamaño.
+
+Entiendo el ejercicio de esta manera: primero diferenciar entre especies y dentro de las especies entre su sexo, y desde ahí saber media, sd... de las distintas variables pedidas.
+
+```{r}
+#install.packages("tidyverse")
+#library(tidyverse)
+
+ tablalongitudpico <- penguins %>%
+  select(species, sex, bill_length_mm) %>% 
+  group_by(species,sex) %>%
+  summarise(media.lp =mean(bill_length_mm), sd.lp = sd(bill_length_mm), min.lp = min(bill_length_mm), max.lp = max(bill_length_mm))
+ 
+head(tablalongitudpico)
+
+tablaprofundidadpico <- penguins %>%
+  select(species, sex, bill_depth_mm) %>% 
+  group_by(species,sex) %>%
+  summarise(media.pp =mean(bill_depth_mm), sd.pp = sd(bill_depth_mm), min.pp = min(bill_depth_mm), max.pp = max(bill_depth_mm))
+
+head(tablaprofundidadpico)
+
+tablalongitudaleta <- penguins %>%
+  select(species, sex, flipper_length_mm) %>% 
+  group_by(species,sex) %>%
+  summarise(media.la =mean(flipper_length_mm), sd.la = sd(flipper_length_mm), min.la = min(flipper_length_mm), max.la = max(flipper_length_mm))
+
+head(tablalongitudaleta)
+
+tablatamaño <- penguins %>%
+  select(species, sex, body_mass_g) %>% 
+  group_by(species,sex) %>%
+  summarise(media.t =mean(body_mass_g), sd.t = sd(body_mass_g), min.t = min(body_mass_g), max.t = max(body_mass_g))
+
+head(tablatamaño)
+
+```
+Ejercicio 2: Un gráfico de barras que represente el número de individuos muestreados de cada especie en cada isla, representando las especies en diferentes colores (chinstrap – morado, gentoo – azul, adelie – naranja). Contesta a las siguientes preguntas: ¿qué especie se ha muestreado en las tres islas? ¿cuántos individuos se han muestreado de la isla Dream?
+
+```{r}
+#install.packages("ggplot2")
+#library(ggplot2)
+
+ggplot(data = penguins) +
+  geom_bar(aes(x = island, fill = species)) +
+   scale_fill_manual(values=c("orange", "purple","blue"))
+```
+Adelie es la especie que se ha muestreado en las 3 islas.
+En la isla Dream se han muestreado unos 125 pingüinos.
+
+```{r}
+
+```
+Ejercicio 3: Un gráfico multipanel de cajas y bigotes del tamaño de los pingüinos según su sexo, donde aparezca un panel para cada especie. Contesta a las siguientes preguntas: ¿qué especie tiene mayor tamaño? ¿en qué especie las hembras y los machos tienen un tamaño más similar?
+
+```{r}
+PenguinAdelie <- penguins %>%
+  select(species, sex, body_mass_g) %>% 
+  filter(species == "Adelie")
+  
+GraficoAdelie <- ggplot(data = PenguinAdelie ) + 
+  geom_boxplot(aes(x = sex, y = body_mass_g))
+
+PenguinGentoo <- penguins %>%
+  select(species, sex, body_mass_g) %>% 
+  filter(species == "Gentoo")
+  
+GraficoGentoo <- ggplot(data = PenguinGentoo ) + 
+  geom_boxplot(aes(x = sex, y = body_mass_g))
+
+PenguinChinstrap <- penguins %>%
+  select(species, sex, body_mass_g) %>% 
+  filter(species == "Chinstrap")
+  
+GraficoChinstrap <- ggplot(data = PenguinChinstrap ) + 
+  geom_boxplot(aes(x = sex, y = body_mass_g))
+
+#library(patchwork) 
+
+GraficoAdelie + GraficoChinstrap + GraficoGentoo
+```
+El mayor tamaño lo tiene el macho de la especie Gentoo.
+La mayor similitud de tamaño entre machos y hembras lo tiene la raza Chinstrap
